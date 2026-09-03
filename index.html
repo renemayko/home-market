@@ -193,7 +193,9 @@ function showCart() {
         alert("Your cart is empty.");
         return;
         }
-       if (cart.length > 1) {
+       alert("Online payments are temporarily unavailable while products are being prepared.");
+       return;
+        if (cart.length > 1) {
         alert("Please checkout one product type at a time.");
         return;
         }
