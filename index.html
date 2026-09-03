@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Market</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+  <nav>
+    <a href="#" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Home</a>
+    <a href="#" onclick="document.querySelector('.products-grid').scrollIntoView({ behavior: 'smooth' }); return false;">Shop</a>
+   <a href="#" onclick="document.querySelector('.categories-grid').scrollIntoView({ behavior: 'smooth' }); return false;">Categories</a>
+    <a href="#" onclick="showCart(); return false;">Cart</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+<h1>Home Market</h1>
+<p>Everything your home needs, all in one place.</p>
+<button onclick="document.querySelector('.products-grid').scrollIntoView({ behavior: 'smooth' });">Shop Now</button>
+<section>
+  <h2>Featured Products</h2>
+  <div class="products-grid">
+  <div class="product-card">
+   
+    <h3>Smart Watch</h3>
+    <p>$39.99</p>
+   <button onclick="addToCart('Smart Watch', 39.99)">Add to Cart</button>
+   <button onclick="removeFromCart('Smart Watch')">Remove from Cart</button>
+  </div>
+  <div class="product-card">
+    <h3>Phone Stand</h3>
+    <p>$19.99</p>
+   <button onclick="addToCart('Phone Stand', 19.99)">Add to Cart</button>
+   <button onclick="removeFromCart('Phone Stand')">Remove from Cart</button>
+  </div>
+  <div class="add-product-card">
+    <button type="button" onclick="showAddProductForm()">+</button>
+    <p>Add New Product</p>
+  </div>
+  </div>
+</section>
+<section>
+  <h2>Categories</h2>
+  <div class="categories-grid">
+    <div class="category-card">
+      <h3>Home Essentials</h3>
+      <p>Daily items for your home</p>
+      <button onclick="viewCategory('Home Essentials')">View Category</button>
+      </div>
+      <div class="category-card">
+        <h3>Cleaning Supplies</h3>
+       
+        <p>Cleaning products for your home</p>
+        <button onclick="viewCategory('Cleaning Supplies')">View Category</button>
+      </div>
+      </section>
+      <section id="contact">
+        <h2>Contact</h2>
+        </section>
+     <section id="checkout">
+    <h2>Checkout</h2>
+    <form id="checkoutForm">
+      <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    <label for="address">Shipping Address:</label>
+    <input type="text" id="address" required>
+    <label for="city">City:</label>
+    <input type="text" id="city" required>
+    <label for="state">State:</label>
+    <input type="text" id="state" required>
+    <label for="zip">ZIP Code:</label>
+    <input type="text" id="zip" required>
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" required>
+    <h3>Payment</h3>
+    <div id="payment-section"></div>
+    <button type="button" id="payButton">Pay Now</button>
+    <button type="submit">Place Order</button>
+    </form>  
+     </section> 
+      <script>
+   let cart = [];     
+  function addToCart(name, price) {
+   let existingItem = cart.find(item => item.name === name);
+   if (existingItem) {
+    existingItem.quantity += 1;
+    } else {
+      cart.push({ name, price, quantity: 1 });
+}
+    
+    alert(name + " added to cart - $" + price.toFixed(2));
+  }
+ function viewCategory(category) {
+  alert("Opening category: " + category);
+}
+function showCart() {
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+    }
+    let message = "Cart:\n";
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.price * item.quantity;
+      });
+      
+    cart.forEach((item) => {
+      message += item.name + " - $" + item.price.toFixed(2) + "\n";
+      message += "Quantity: " + item.quantity + "\n";
+      });
+
+      message += "\nTotal: $" + total.toFixed(2);
+      alert(message);
+      }
+      function removeFromCart(name) {
+        let item = cart.find(item => item.name === name);
+        if (item) {
+          item.quantity -= 1;
+          if (item.quantity <= 0) {
+            cart = cart.filter(cartItem => cartItem.name !== name);
+            }
+            alert(name + " removed from cart");
+            }
+            }
+ document.getElementById("checkoutForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  if (cart.length === 0) {
+    alert("Your cart is empty.");
+    return;
+    }
+    const fullName = document.getElementById("fullName").value;
+    const email = document.getElementById("email").value;
+    const address = document.getElementById("address").value;
+    const city = document.getElementById("city").value;
+    const state = document.getElementById("state").value;
+    const zip = document.getElementById("zip").value;
+    const phone = document.getElementById("phone").value;
+   const order = {};
+   order.fullName = fullName;
+   order.email = email;
+   order.address = address;
+   order.city = city;
+   order.state = state;
+   order.zip = zip;
+   order.phone = phone;
+   order.items = cart;
+   console.log(order);
+   
+    alert("Order placed successfully!");
+    document.getElementById("checkoutForm").reset();
+    cart = [];
+    });
+    function showAddProductForm() {
+      const name = prompt("Product name:");
+      const price = prompt("Product price:");
+      const description = prompt("Product description:");
+      const stock = prompt("Product quantity:");
+      if (!name || !price || !description || !stock) return;
+      const newProduct = { name, price, description, stock };
+      console.log(newProduct);
+     const savedProducts = JSON.parse(localStorage.getItem("homeMarketProducts")) || [];
+      localStorage.setItem("homeMarketProducts", JSON.stringify([...savedProducts, newProduct]));
+     
+     const productCard = document.createElement("div");
+     productCard.className = "product-card";
+     productCard.innerHTML = `<h3>${name}</h3>`;
+     productCard.innerHTML += `<p>$${price}</p>`;
+     productCard.innerHTML += `<p>${description}</p>`;
+     productCard.innerHTML += `<p>Stock: ${stock}</p>`;
+     productCard.innerHTML += `<button onclick="addToCart('${name}', ${price})">Add to Cart</button>`;
+     productCard.innerHTML += `<button onclick="removeFromCart('${name}')">Remove from Cart</button>`;
+     document.querySelector(".products-grid").appendChild(productCard);
+     }
+      const allSavedProducts = JSON.parse(localStorage.getItem("homeMarketProducts")) || [];
+      const validProducts = allSavedProducts.filter(product => product.name && product.price && product.description && product.stock);
+      validProducts.forEach(function(product) {
+        const savedCard = document.createElement("div");
+        savedCard.className = "product-card";
+        savedCard.innerHTML = `<h3>${product.name}</h3>`;
+        savedCard.innerHTML += `<p>$${product.price}</p>`;
+        savedCard.innerHTML += `<p>${product.description}</p>`;
+        savedCard.innerHTML += `<p>Stock: ${product.stock}</p>`;
+        savedCard.innerHTML += `<button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>`;
+        savedCard.innerHTML += `<button onclick="removeFromCart('${product.name}')">Remove from Cart</button>`;
+        document.querySelector(".products-grid").appendChild(savedCard);
+        });
+        document.getElementById("payButton").addEventListener("click", function() {
+          if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+        }
+       if (cart.length > 1) {
+        alert("Please checkout one product type at a time.");
+        return;
+        }
+        const productName = cart[0].name;
+        const productPrice = cart[0].price;
+        const quantity = cart[0].quantity;
+        const totalPrice = productPrice * quantity;
+        let paymentLink = "";
+        if (productName === "Smart Watch") {
+          paymentLink = "https://buy.stripe.com/28E00j579fm99M4dyuaIM00";
+       }
+       else if (productName === "Phone Stand") {
+       paymentLink = "https://buy.stripe.com/14A00j0QTb5T1fybqmaIM01";
+       }
+          window.location.href = paymentLink;
+        });                
+</script>
+</body>
+
+</html>
