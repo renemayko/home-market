@@ -23,17 +23,20 @@
   <h2>Featured Products</h2>
   <div class="products-grid">
   <div class="product-card">
-   
-    <h3>Smart Watch</h3>
-    <p>$39.99</p>
-   <button onclick="addToCart('Smart Watch', 39.99)">Add to Cart</button>
-   <button onclick="removeFromCart('Smart Watch')">Remove from Cart</button>
+   <img src="car-phone-holder.png" alt="Car Phone Holder">
+    <h3>Car Phone Holder</h3>
+    <p>$10.00</p>
+   <button onclick="addToCart('Car Phone Holder', 10.00)">Add to Cart</button>
+   <p>Stock: 2</p>
+   <button onclick="removeFromCart('Car Phone Holder')">Remove from Cart</button>
   </div>
   <div class="product-card">
-    <h3>Phone Stand</h3>
-    <p>$19.99</p>
-   <button onclick="addToCart('Phone Stand', 19.99)">Add to Cart</button>
-   <button onclick="removeFromCart('Phone Stand')">Remove from Cart</button>
+    <img src="smart-tracking-phone-holder.png" alt="Smart Tracking Phone Holder">
+    <h3>Smart Tracking Phone Holder</h3>
+    <p>$20.00</p>
+   <button onclick="addToCart('Smart Tracking Phone Holder', 20.00)">Add to Cart</button>
+   <p>Stock: 2</p>
+   <button onclick="removeFromCart('Smart Tracking Phone Holder')">Remove from Cart</button>
   </div>
   <div class="add-product-card">
     <button type="button" onclick="showAddProductForm()">+</button>
@@ -159,15 +162,16 @@ function showCart() {
       const price = prompt("Product price:");
       const description = prompt("Product description:");
       const stock = prompt("Product quantity:");
-      if (!name || !price || !description || !stock) return;
-      const newProduct = { name, price, description, stock };
+      const image = prompt("Product image filename:");
+     if (!name || !price || !description || !stock || !image) return;
+      const newProduct = { name, price, description, stock, image };
       console.log(newProduct);
      const savedProducts = JSON.parse(localStorage.getItem("homeMarketProducts")) || [];
       localStorage.setItem("homeMarketProducts", JSON.stringify([...savedProducts, newProduct]));
      
      const productCard = document.createElement("div");
      productCard.className = "product-card";
-     productCard.innerHTML = `<h3>${name}</h3>`;
+    productCard.innerHTML = `<img src="${image}" alt="${name}"><h3>${name}</h3>`;
      productCard.innerHTML += `<p>$${price}</p>`;
      productCard.innerHTML += `<p>${description}</p>`;
      productCard.innerHTML += `<p>Stock: ${stock}</p>`;
@@ -180,7 +184,7 @@ function showCart() {
       validProducts.forEach(function(product) {
         const savedCard = document.createElement("div");
         savedCard.className = "product-card";
-        savedCard.innerHTML = `<h3>${product.name}</h3>`;
+       savedCard.innerHTML = `<img src="${product.image}" alt="${product.name}"><h3>${product.name}</h3>`;
         savedCard.innerHTML += `<p>$${product.price}</p>`;
         savedCard.innerHTML += `<p>${product.description}</p>`;
         savedCard.innerHTML += `<p>Stock: ${product.stock}</p>`;
