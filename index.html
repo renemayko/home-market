@@ -193,6 +193,12 @@ function showCart() {
         document.querySelector(".products-grid").appendChild(savedCard);
         });
         document.getElementById("payButton").addEventListener("click", function() {
+          const checkoutForm = document.getElementById("checkoutForm");
+
+if (!checkoutForm.checkValidity()) {
+  checkoutForm.reportValidity();
+  return;
+}
           if (cart.length === 0) {
         alert("Your cart is empty.");
         return;
