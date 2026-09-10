@@ -197,8 +197,7 @@ function showCart() {
         alert("Your cart is empty.");
         return;
         }
-       alert("Online payments are temporarily unavailable while products are being prepared.");
-       return;
+       
         if (cart.length > 1) {
         alert("Please checkout one product type at a time.");
         return;
@@ -208,11 +207,11 @@ function showCart() {
         const quantity = cart[0].quantity;
         const totalPrice = productPrice * quantity;
         let paymentLink = "";
-        if (productName === "Smart Watch") {
-          paymentLink = "https://buy.stripe.com/28E00j579fm99M4dyuaIM00";
+       if (productName === "Car Phone Holder") {
+          paymentLink = "https://buy.stripe.com/6oU5kDfLNfm91fy662aIM02";
        }
-       else if (productName === "Phone Stand") {
-       paymentLink = "https://buy.stripe.com/14A00j0QTb5T1fybqmaIM01";
+       else if (productName === "Smart Tracking Phone Holder") {
+       paymentLink = paymentLink = "https://buy.stripe.com/eVq9AT7fh8XL4rKfGCaIM03";
        }
           window.location.href = paymentLink;
         });                
